@@ -4,8 +4,10 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -27,7 +29,7 @@ func main() {
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("../Web/static/"))))
 	router.Handle("/signup", signUp).Methods("GET")
 	//err = http.ListenAndServe(":80", handlers.LoggingHandler(os.Stdout, firewall(router)))
-	err = http.ListenAndServeTLS(":443", "C:\\Users\\Hosein\\Documents\\Keys\\server.crt", "C:\\Users\\Hosein\\Documents\\Keys\\sample_key.priv", nil)
+	err = http.ListenAndServeTLS(":443", "C:\\Users\\Hosein\\Documents\\Keys\\server.crt", "C:\\Users\\Hosein\\Documents\\Keys\\sample_key.priv", handlers.LoggingHandler(os.Stdout, firewall(router)))
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
